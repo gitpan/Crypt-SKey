@@ -6,7 +6,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
 @EXPORT = qw( key key_md4 key_md5 );
-$VERSION = '0.03';
+$VERSION = '0.04';
 $HASH = 'MD4';  # set default here, could be 4 or 5
 
 my @WORDS = qw(
@@ -280,6 +280,7 @@ Crypt::SKey - Perl S/Key calculator
   # Command line:
   perl -MCrypt::SKey -e key 500 fo099804
   perl -MCrypt::SKey -e key 500 fo099804 100
+  perl -MCrypt::SKey=key_md4 -e key_md4 500 fo099804
   
   # The following shell alias may be useful:
   alias key 'perl -MCrypt::SKey -e key'
@@ -295,7 +296,11 @@ and may optionally export the function C<compute>.
 C<compute_md4>, C<compute_md5>, C<key_md4>, and C<key_md5> are provided
 as convenience functions for selecting either MD4 or MD5 hashes.  The
 default is MD4; this may be changed with with the C<$Crypt::SKey::HASH>
-variable, assigning it the value of C<MD4> or C<MD5>.
+variable, assigning it the value of C<MD4> or C<MD5>.  You can access
+any of these functions by exporting them in the same manner as
+C<compute> in the above example.
+
+Most S/Key systems use MD4 hashing, but a few (notably OPIE) use MD5.
 
 =head1 INSTALLATION
 
@@ -392,6 +397,8 @@ be happy to add it.
 =head1 AUTHOR
 
 Ken Williams, ken@forum.swarthmore.edu
+
+Thanks to Chris Nandor and Allen Chen for testing MD5 functionality.
 
 =head1 COPYRIGHT
 

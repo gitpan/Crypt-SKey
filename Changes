@@ -1,5 +1,24 @@
 Revision history for Perl extension Crypt::SKey.
 
+0.04  Thu Aug 29 23:08:17 EST 2002
+
+ - Added a mention of OPIE, the main system people might want MD5
+   hashing for, to the docs.  Requested by Allen Chen.
+
+ - The test 03-interactive.t shouldn't run anymore in non-interactive
+   environments like CPANPLUS's smoke-tester.
+
+ - Added a Build.PL so people can install via Module::Build.  This
+   helps capture "recommended" dependencies like Term::ReadLine.
+   (Note to self: it would be nice if Module::Build let you specify a
+   reason *why* things are required/recommended, and if it let you
+   specify boolean combinations like 'Digest::MD5 || Digest::MD4'.)
+
+0.03  Mon Jun 10 11:24 AEST 2002
+
+ - No code changes, just moved some tests from test.pl to t/
+   subdirectory.
+
 0.02  Sun May 12 11:06:44 AEST 2002
 
  - Implemented support for MD5 hashing.  Requested by Allen Chen,

@@ -1,20 +1,22 @@
 use Test;
 
-BEGIN { plan tests => 1 }
+BEGIN {
+  require "t/common.pl";
+  skip_test("We don't seem to have a terminal for interactive mode")
+    unless -t STDIN;
+  
+  $Crypt::SKey::HASH = (have_module('Digest::MD4') ? 'MD4' :
+			have_module('Digest::MD5') ? 'MD5' :
+			skip_test("Neither of Digest::MD4, Digest::MD5 is installed"));
+  
+  need_module('Term::ReadKey');
+}
+
+BEGIN { plan tests => 2 }
 
 use strict;
 use Crypt::SKey qw(key compute);
-require "t/common.pl";
-
-need_module('Term::ReadLine');
-
-if (have_module('Digest::MD4')) {
-  $Crypt::SKey::HASH = 'MD4';
-} elsif (have_module('Digest::MD5')) {
-  $Crypt::SKey::HASH = 'MD5';
-} else {
-  skip_test("Neither of Digest::MD4, Digest::MD5 is installed");
-}
+ok(1);
 
 {
   warn "\nTesting interactive mode: enter 'pwd' (without quotes) at the prompt:\n";

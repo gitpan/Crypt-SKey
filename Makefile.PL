@@ -18,19 +18,21 @@ unless ($have{'Term::ReadKey'}) {
 
 
 my $module = 'Crypt::SKey';
-my ($name, $dir);
-($name = $module) =~ s/.*::(\w+)/$1.pm/;
+my ($file, $dir);
+($file = $module) =~ s/::/\//g;
+$file = "lib/$file.pm";
 ($dir = $module) =~ s/::/-/g;
 
 WriteMakefile
   (
    'NAME'       => $module,
-   'VERSION_FROM' => $name, # finds $VERSION
+   'VERSION_FROM' => $file, # finds $VERSION
    'dist' => { COMPRESS=>"gzip", 
                SUFFIX=>"gz", 
                PREOP=>('rm -f README; '.
-                       "pod2text -80 < $name > README; ".
+                       "pod2text -80 < $file > README; ".
                        "cp -f README $dir-\$(VERSION); "
                       ),
              },
+   PL_FILES => {},
   );

@@ -1,7 +1,9 @@
+Build.PL
 Changes
 MANIFEST			This list of files
+META.yaml
 Makefile.PL
-SKey.pm
+lib/Crypt/SKey.pm
 t/01-md4.t
 t/02-md5.t
 t/03-interactive.t

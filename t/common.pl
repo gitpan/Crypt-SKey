@@ -9,9 +9,8 @@ sub need_module {
 }
 
 sub skip_test {
-  my $msg = @_ ? "$_[0] - " : '';
-  print STDERR $msg;
-  print "1..0\n";
+  my $msg = @_ ? shift() : '';
+  print "1..0 # Skipped: $msg\n";
   exit;
 }
 1;
