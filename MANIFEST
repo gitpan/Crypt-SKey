@@ -1,9 +1,9 @@
 Build.PL
 Changes
 MANIFEST			This list of files
-META.yaml
 META.yml
 Makefile.PL
+README
 lib/Crypt/SKey.pm
 t/01-md4.t
 t/02-md5.t
