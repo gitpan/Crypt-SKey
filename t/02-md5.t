@@ -4,14 +4,15 @@
 ######################### We start with some black magic to print on failure.
 
 use Test;
+BEGIN {
+  require 't/common.pl';
+  need_module('Digest::MD5');
+}  
 
 BEGIN { plan tests => 6 }
 
 use strict;
 use Crypt::SKey qw(key compute);
-require 't/common.pl';
-
-need_module('Digest::MD5');
 $Crypt::SKey::HASH = 'MD5';
 
 ok(1);

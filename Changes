@@ -1,5 +1,11 @@
 Revision history for Perl extension Crypt::SKey.
 
+0.05
+
+ - The tests weren't properly being skipped if their module
+   prerequisites weren't installed, try as they might.  This has been
+   fixed.
+
 0.04  Thu Aug 29 23:08:17 EST 2002
 
  - Added a mention of OPIE, the main system people might want MD5
