@@ -2,4 +2,7 @@ Changes
 MANIFEST			This list of files
 Makefile.PL
 SKey.pm
-test.pl
+t/01-md4.t
+t/02-md5.t
+t/03-interactive.t
+t/common.pl

@@ -6,7 +6,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
 @EXPORT = qw( key key_md4 key_md5 );
-$VERSION = '0.02';
+$VERSION = '0.03';
 $HASH = 'MD4';  # set default here, could be 4 or 5
 
 my @WORDS = qw(
