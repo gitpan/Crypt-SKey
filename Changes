@@ -1,0 +1,6 @@
+Revision history for Perl extension Crypt::SKey.
+
+0.01  Thu Jun  7 16:53:39 2001
+	- original version; created by h2xs 1.1.1.4 with options
+		-XA -n Crypt::SKey
+
