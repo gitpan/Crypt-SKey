@@ -1,15 +1,13 @@
 package Crypt::SKey;
 
 use strict;
-use Digest::MD4;
-use Term::ReadKey;
 
-
-use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
+use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH);
 @ISA = qw(Exporter);
-@EXPORT_OK = ( 'key', 'compute' );
-@EXPORT = ( 'key' );
-$VERSION = '0.01';
+@EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
+@EXPORT = qw( key key_md4 key_md5 );
+$VERSION = '0.02';
+$HASH = 'MD4';  # set default here, could be 4 or 5
 
 my @WORDS = qw(
  A ABE ACE ACT AD ADA ADD AGO AID AIM AIR ALL ALP AM AMY AN ANA AND ANN
@@ -152,6 +150,16 @@ my @WORDS = qw(
  YAWN YEAH YEAR YELL YOGA YOKE
 );
 
+sub compute_md4 {
+  local $HASH = 'MD4';
+  &compute;
+}
+
+sub compute_md5 {
+  local $HASH = 'MD5';
+  &compute;
+}
+
 sub compute {
   my ($n, $seed, $passwd, $cnt) = @_;
   $cnt ||= 1;
@@ -170,9 +178,21 @@ sub compute {
   return wantarray ? @out : $out[0];
 }
 
+sub key_md4 {
+  local $HASH = 'MD4';
+  &key;
+}
+
+sub key_md5 {
+  local $HASH = 'MD5';
+  &key;
+}
+
 sub key {
   # Meant to be run from the command line, so it looks at @ARGV instead of @_
   die "Usage: perl -mCrypt::Skey -e key <sequence> <seed> [<count>]\n" unless @ARGV;
+  require Term::ReadKey;
+  Term::ReadKey->import('ReadMode');
   my ($n, $seed, $cnt) = @ARGV;
 
   # Could be: key <sequence>/<seed> [<count>]
@@ -198,7 +218,14 @@ sub key {
 }
 
 sub hash {
-  my $d = Digest::MD4->hash($_[0]);
+  my $d;
+  if ($HASH eq 'MD5') {
+    require Digest::MD5;
+    $d = Digest::MD5::md5($_[0]);
+  } else {  # assume default of MD4
+    require Digest::MD4;
+    $d = Digest::MD4->hash($_[0]);
+  }
   return substr($d,0,8) ^ substr($d,8,8); # Fold to 8 bytes
 }
 
@@ -265,6 +292,11 @@ This module contains a simple S/Key calculator (as described in RFC
 1760) implemented in Perl.  It exports the function C<key> by default,
 and may optionally export the function C<compute>.
 
+C<compute_md4>, C<compute_md5>, C<key_md4>, and C<key_md5> are provided
+as convenience functions for selecting either MD4 or MD5 hashes.  The
+default is MD4; this may be changed with with the C<$Crypt::SKey::HASH>
+variable, assigning it the value of C<MD4> or C<MD5>.
+
 =head1 INSTALLATION
 
 Follow the usual steps for installing any Perl module:
@@ -276,6 +308,10 @@ Follow the usual steps for installing any Perl module:
 =head1 FUNCTIONS
 
 =head2 C<compute($sequence_num, $seed, $password [, $count])>
+
+=head2 C<compute_md4($sequence_num, $seed, $password [, $count])>
+
+=head2 C<compute_md5($sequence_num, $seed, $password [, $count])>
 
 Given three arguments, computes the hash value and returns it as a
 string containing six words separated by spaces.  If $count is
@@ -310,6 +346,10 @@ paper so that you don't need to have an S/Key calculator around later.
 
 
 =head2 C<key()>
+
+=head2 C<key_md4()>
+
+=head2 C<key_md5()>
 
 Acts just like the 'key' executable program that comes with the
 standard distribution of s/key.  Reads several arguments from the
@@ -355,7 +395,7 @@ Ken Williams, ken@forum.swarthmore.edu
 
 =head1 COPYRIGHT
 
-Copyright 2000-2001 Ken Williams.  All rights reserved.
+Copyright 2000-2002 Ken Williams.  All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -363,5 +403,6 @@ modify it under the same terms as Perl itself.
 =head1 SEE ALSO
 
 perl(1).  L<RFC 1760|"http://rfc.net/rfc1760.html">.  Digest::MD4(1).
+Digest::MD5(1).  Term::ReadKey(1).
 
 =cut

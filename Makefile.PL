@@ -1,10 +1,36 @@
+use strict;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    'NAME'		=> 'Crypt::SKey',
-    'VERSION_FROM'	=> 'SKey.pm', # finds $VERSION
-    'PREREQ_PM'		=> {Digest::MD4 => '',
-			    Term::ReadKey => '',
-			   },
-);
+
+my %have;
+foreach my $mod (qw(Digest::MD4 Digest::MD5 Term::ReadKey)) {
+  eval "use $mod";
+  $have{$mod} = not $@;
+}
+
+unless ($have{'Digest::MD4'} or $have{'Digest::MD5'}) {
+  die("This module requires either Digest::MD4 or Digest::MD5 for proper operation.\n".
+      "See the documentation for more details.\n");
+}
+unless ($have{'Term::ReadKey'}) {
+  warn("This module recommends installing Term::ReadKey for full functionality.\n".
+       "See the documentation for more details.\n");
+}
+
+
+my $module = 'Crypt::SKey';
+my ($name, $dir);
+($name = $module) =~ s/.*::(\w+)/$1.pm/;
+($dir = $module) =~ s/::/-/g;
+
+WriteMakefile
+  (
+   'NAME'       => $module,
+   'VERSION_FROM' => $name, # finds $VERSION
+   'dist' => { COMPRESS=>"gzip", 
+               SUFFIX=>"gz", 
+               PREOP=>('rm -f README; '.
+                       "pod2text -80 < $name > README; ".
+                       "cp -f README $dir-\$(VERSION); "
+                      ),
+             },
+  );

@@ -1,6 +1,12 @@
 Revision history for Perl extension Crypt::SKey.
 
-0.01  Thu Jun  7 16:53:39 2001
-	- original version; created by h2xs 1.1.1.4 with options
-		-XA -n Crypt::SKey
+0.02  Sun May 12 11:06:44 AEST 2002
 
+ - Implemented support for MD5 hashing.  Requested by Allen Chen,
+   patched by Chris Nandor.
+
+ - Term::ReadLine isn't strictly necessary now, it will only be loaded
+   when using the key() function.
+
+0.01  Thu Jun  7 16:53:39 2001
+ - original version; created by h2xs 1.1.1.4 with options -XA -n Crypt::SKey
