@@ -1,13 +1,22 @@
 --- #YAML:1.0
 name: Crypt-SKey
-version: 0.06
+version: 0.07
+author:
+  - Ken Williams, ken@forum.swarthmore.edu
+abstract: Perl S/Key calculator
 license: perl
-distribution_type: module
-requires: {}
+resources:
+  license: http://dev.perl.org/licenses/
 recommends:
   Digest::MD4: 1
   Digest::MD5: 2.16
   Term::ReadKey: 2.14
-build_requires: {}
-conflicts: {}
-generated_by: Module::Build version 0.15
+provides:
+  Crypt::SKey:
+    file: lib/Crypt/SKey.pm
+    version: 0.07
+generated_by: Module::Build version 0.2703
+meta-spec:
+  url: |-
+    http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

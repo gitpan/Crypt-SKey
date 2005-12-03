@@ -1,5 +1,11 @@
 Revision history for Perl extension Crypt::SKey.
 
+0.07  Sat Dec  3 15:55:37 CST 2005
+
+ - Added the ability to generate output in hexadecimal format for the
+   benefit of some older gear that likes to see it that way
+   (e.g. HP4000m/HP8000m/HP2424m). [Ed Ravin]
+
 0.06  Mon Feb 17 08:49:39 CST 2003
 
  - The README wasn't being included in the distribution because I'd

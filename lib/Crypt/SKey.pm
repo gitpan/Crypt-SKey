@@ -2,12 +2,15 @@ package Crypt::SKey;
 
 use strict;
 
-use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH);
+use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH $HEX);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
 @EXPORT = qw( key key_md4 key_md5 );
-$VERSION = '0.06';
+$VERSION = '0.07';
 $HASH = 'MD4';  # set default here, could be 4 or 5
+$HEX= 0; # if true, return key as a hex digit string
+
+my @HEXDIGITS= qw( 0 1 2 3 4 5 6 7 8 9 A B C D E F);
 
 my @WORDS = qw(
  A ABE ACE ACT AD ADA ADD AGO AID AIM AIR ALL ALP AM AMY AN ANA AND ANN
@@ -172,7 +175,7 @@ sub compute {
   for (0..$n-$cnt) {$key = hash($key)}
 
   for (1..$cnt) {
-    push @out, btoe($key);
+    push @out, $HEX ? btoh($key) : btoe($key);
     $key = hash($key);
   }
   return wantarray ? @out : $out[0];
@@ -243,14 +246,20 @@ sub checksum {
   return $sum;
 }
 
-sub btoe {
+sub btoh {
+  # Binary to hex
   my $binary = shift;
-  my $english = '';
+  return join '', map $HEXDIGITS[extract($binary, 4*$_, 4)], 0..15;
+}
+
+sub btoe {
+  # Binary to english
+  my $binary = shift;
 
   my $p = checksum($binary,2);
   $binary .= chr($p << 6);
 
-  return join ' ', map $WORDS[extract($binary,$_,11)], (0,11,22,33,44,55);
+  return join ' ', map $WORDS[extract($binary,11*$_,11)], 0..5;
 }
 
 sub extract {
@@ -264,7 +273,6 @@ sub extract {
 
 1;
 __END__
-# Below is stub documentation for your module. You better edit it!
 
 =head1 NAME
 
@@ -319,7 +327,8 @@ Follow the usual steps for installing any Perl module:
 =head2 C<compute_md5($sequence_num, $seed, $password [, $count])>
 
 Given three arguments, computes the hash value and returns it as a
-string containing six words separated by spaces.  If $count is
+string containing six words separated by spaces (or as a string of 16
+hex digits if C<$Crypt::SKey::HEX> is set to a true value).  If $count is
 specified and greater than one, returns a list of several such
 strings.  The meanings of the arguments is as follows:
 

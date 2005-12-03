@@ -9,7 +9,7 @@ BEGIN {
   need_module('Digest::MD5');
 }  
 
-BEGIN { plan tests => 6 }
+BEGIN { plan tests => 7 }
 
 use strict;
 use Crypt::SKey qw(key compute);
@@ -36,3 +36,8 @@ ok(1);
   ok($lines[3], 'SOD SOAK SLAB MONT STEW OVAL', $lines[3]);
 }
 
+{
+  # Try hex mode
+  local $Crypt::SKey::HEX = 1;
+  ok compute(1234, "test5678", "secret"), "61BEB7029243EC0E";
+}

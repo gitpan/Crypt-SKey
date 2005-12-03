@@ -9,5 +9,6 @@ my $m = Module::Build->new
 		  Term::ReadKey => 2.14,
 		 },
    license => 'perl',
+   create_readme => 1,
   );
 $m->create_build_script;

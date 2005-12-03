@@ -9,7 +9,7 @@ BEGIN {
   need_module('Digest::MD4');
 }
 
-BEGIN { plan tests => 6 }
+BEGIN { plan tests => 7 }
 
 use strict;
 use Crypt::SKey qw(key compute);
@@ -35,3 +35,8 @@ ok(1);
   ok($lines[3], 'HESS SWIM RAYS DING MOAT FAWN', $lines[3]);
 }
 
+{
+  # Try hex mode
+  local $Crypt::SKey::HEX = 1;
+  ok compute(1234, "test5678", "secret"), "BF93C27D092B1DBA";
+}
