@@ -1,12 +1,13 @@
 package Crypt::SKey;
 
 use strict;
+#use Exporter;
 
 use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH $HEX);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
 @EXPORT = qw( key key_md4 key_md5 );
-$VERSION = '0.07';
+$VERSION = '0.08';
 $HASH = 'MD4';  # set default here, could be 4 or 5
 $HEX= 0; # if true, return key as a hex digit string
 
@@ -405,13 +406,13 @@ be happy to add it.
 
 =head1 AUTHOR
 
-Ken Williams, ken@forum.swarthmore.edu
+Ken Williams, kwilliams@cpan.org
 
 Thanks to Chris Nandor and Allen Chen for testing MD5 functionality.
 
 =head1 COPYRIGHT
 
-Copyright 2000-2002 Ken Williams.  All rights reserved.
+Copyright 2000-2008 Ken Williams.  All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

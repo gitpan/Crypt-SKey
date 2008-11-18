@@ -108,12 +108,12 @@ NOTES
     it.
 
 AUTHOR
-    Ken Williams, ken@forum.swarthmore.edu
+    Ken Williams, kwilliams@cpan.org
 
     Thanks to Chris Nandor and Allen Chen for testing MD5 functionality.
 
 COPYRIGHT
-    Copyright 2000-2002 Ken Williams. All rights reserved.
+    Copyright 2000-2008 Ken Williams. All rights reserved.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
