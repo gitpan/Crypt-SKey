@@ -1,6 +1,6 @@
 ---
 name: Crypt-SKey
-version: 0.08
+version: 0.09
 author:
   - 'Ken Williams, kwilliams@cpan.org'
 abstract: Perl S/Key calculator
@@ -14,7 +14,7 @@ recommends:
 provides:
   Crypt::SKey:
     file: lib/Crypt/SKey.pm
-    version: 0.08
+    version: 0.09
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

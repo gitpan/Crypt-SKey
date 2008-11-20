@@ -1,6 +1,9 @@
 Revision history for Perl extension Crypt::SKey.
 
-0.07 - Mon Nov 17 21:49:09 2008
+ - This time I *swear* I added "use Exporter;" and it's not commented
+   out.
+
+0.08 - Mon Nov 17 21:51:53 2008
 
  - Added a missing "use Exporter;" line to the code.  [Spotted by
    Frédéric Brière]
