@@ -7,7 +7,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION $HASH $HEX);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw( key compute key_md4 key_md5 compute_md4 compute_md5 );
 @EXPORT = qw( key key_md4 key_md5 );
-$VERSION = '0.09';
+$VERSION = '0.10';
 $HASH = 'MD4';  # set default here, could be 4 or 5
 $HEX= 0; # if true, return key as a hex digit string
 
@@ -164,6 +164,11 @@ sub compute_md5 {
   &compute;
 }
 
+sub compute_sha1 {
+  local $HASH = 'SHA1';
+  &compute;
+}
+
 sub compute {
   my ($n, $seed, $passwd, $cnt) = @_;
   $cnt ||= 1;
@@ -189,6 +194,11 @@ sub key_md4 {
 
 sub key_md5 {
   local $HASH = 'MD5';
+  &key;
+}
+
+sub key_sha1 {
+  local $HASH = 'SHA1';
   &key;
 }
 
@@ -226,11 +236,22 @@ sub hash {
   if ($HASH eq 'MD5') {
     require Digest::MD5;
     $d = Digest::MD5::md5($_[0]);
-  } else {  # assume default of MD4
+    return substr($d,0,8) ^ substr($d,8,8); # Fold 16-byte result to 8 bytes
+  } elsif ($HASH eq 'SHA1') {
+    require Digest::SHA1;
+    $d = Digest::SHA1::sha1($_[0]);
+    # Fold 20-byte result to 8 bytes
+    my $folded= substr($d,0,8) ^ substr($d,8,8);
+    $folded= (substr($folded,0,4) ^ substr($d,16,4)) . substr($folded,4,4);
+    # SHA1 is big-endian, but RFC2289 mandates little-endian result
+    return pack("N2", unpack("V2", $folded));
+  } elsif ($HASH eq 'MD4') {
     require Digest::MD4;
     $d = Digest::MD4->hash($_[0]);
+    return substr($d,0,8) ^ substr($d,8,8); # Fold 16-byte result to 8 bytes
+  } else {
+    die "Unrecognized algorithm: '$HASH'";
   }
-  return substr($d,0,8) ^ substr($d,8,8); # Fold to 8 bytes
 }
 
 sub checksum {
@@ -302,10 +323,10 @@ This module contains a simple S/Key calculator (as described in RFC
 1760) implemented in Perl.  It exports the function C<key> by default,
 and may optionally export the function C<compute>.
 
-C<compute_md4>, C<compute_md5>, C<key_md4>, and C<key_md5> are provided
-as convenience functions for selecting either MD4 or MD5 hashes.  The
+C<compute_md4>, C<compute_md5>, C<compute_sha1>, C<key_md4>, C<key_md5>, and C<key_sha1> are provided
+as convenience functions for selecting MD4, MD5, or SHA1 hashes.  The
 default is MD4; this may be changed with with the C<$Crypt::SKey::HASH>
-variable, assigning it the value of C<MD4> or C<MD5>.  You can access
+variable, assigning it the value of C<MD4>, C<MD5>, or C<SHA1>.  You can access
 any of these functions by exporting them in the same manner as
 C<compute> in the above example.
 
@@ -326,6 +347,8 @@ Follow the usual steps for installing any Perl module:
 =head2 C<compute_md4($sequence_num, $seed, $password [, $count])>
 
 =head2 C<compute_md5($sequence_num, $seed, $password [, $count])>
+
+=head2 C<compute_sha1($sequence_num, $seed, $password [, $count])>
 
 Given three arguments, computes the hash value and returns it as a
 string containing six words separated by spaces (or as a string of 16
@@ -365,6 +388,8 @@ paper so that you don't need to have an S/Key calculator around later.
 =head2 C<key_md4()>
 
 =head2 C<key_md5()>
+
+=head2 C<key_sha1()>
 
 Acts just like the 'key' executable program that comes with the
 standard distribution of s/key.  Reads several arguments from the
@@ -412,7 +437,7 @@ Thanks to Chris Nandor and Allen Chen for testing MD5 functionality.
 
 =head1 COPYRIGHT
 
-Copyright 2000-2008 Ken Williams.  All rights reserved.
+Copyright 2000-2009 Ken Williams.  All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

@@ -1,5 +1,14 @@
 Revision history for Perl extension Crypt::SKey.
 
+0.09 - Wed Jan  7 22:43:49 2009
+
+ - Added support for SHA1 hashing. [Ed Ravin]
+
+ - An unknown $HASH setting will now trigger an error, rather than
+   silently defaulting to MD4.
+
+0.09 - Wed Nov 19 19:46:48 2008
+
  - This time I *swear* I added "use Exporter;" and it's not commented
    out.
 

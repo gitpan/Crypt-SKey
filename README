@@ -22,12 +22,12 @@ DESCRIPTION
     1760) implemented in Perl. It exports the function `key' by default, and
     may optionally export the function `compute'.
 
-    `compute_md4', `compute_md5', `key_md4', and `key_md5' are provided as
-    convenience functions for selecting either MD4 or MD5 hashes. The
-    default is MD4; this may be changed with with the `$Crypt::SKey::HASH'
-    variable, assigning it the value of `MD4' or `MD5'. You can access any
-    of these functions by exporting them in the same manner as `compute' in
-    the above example.
+    `compute_md4', `compute_md5', `compute_sha1', `key_md4', `key_md5', and
+    `key_sha1' are provided as convenience functions for selecting MD4, MD5,
+    or SHA1 hashes. The default is MD4; this may be changed with with the
+    `$Crypt::SKey::HASH' variable, assigning it the value of `MD4', `MD5',
+    or `SHA1'. You can access any of these functions by exporting them in
+    the same manner as `compute' in the above example.
 
     Most S/Key systems use MD4 hashing, but a few (notably OPIE) use MD5.
 
@@ -44,6 +44,8 @@ FUNCTIONS
   `compute_md4($sequence_num, $seed, $password [, $count])'
 
   `compute_md5($sequence_num, $seed, $password [, $count])'
+
+  `compute_sha1($sequence_num, $seed, $password [, $count])'
 
     Given three arguments, computes the hash value and returns it as a
     string containing six words separated by spaces (or as a string of 16
@@ -75,6 +77,8 @@ FUNCTIONS
   `key_md4()'
 
   `key_md5()'
+
+  `key_sha1()'
 
     Acts just like the 'key' executable program that comes with the standard
     distribution of s/key. Reads several arguments from the command line
@@ -113,7 +117,7 @@ AUTHOR
     Thanks to Chris Nandor and Allen Chen for testing MD5 functionality.
 
 COPYRIGHT
-    Copyright 2000-2008 Ken Williams. All rights reserved.
+    Copyright 2000-2009 Ken Williams. All rights reserved.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
